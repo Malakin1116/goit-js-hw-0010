@@ -22,15 +22,15 @@ const options = {
   onClose(selectedDates) {
     if (selectedDates[0] <= new Date()) {
       iziToast.error({
-        title: 'Ошибка',
-        message: 'Оберіть дату у майбутньому',
+        title: 'Error',
+        message: 'Please choose a date in the future',
       });
       buttonStart.disabled = true;
     } else {
       buttonStart.disabled = false;
       iziToast.success({
-        title: 'Готово',
-        message: 'Готово, натискайте START',
+        title: 'Ready',
+        message: 'Ready, press START',
       });
     }
   },
@@ -48,17 +48,21 @@ function timerCounter() {
     const timeNow = new Date();
     let countdownTime = chosenDate - timeNow;
 
+    inputData.disabled = true;
+
     if (countdownTime <= 0) {
       clearInterval(interval);
+      inputData.disabled = false;
+
       iziToast.success({
-        title: 'Время вышло',
-        message: 'Час вийшов',
+        title: 'Time’s up',
+        message: 'Time has expired',
       });
 
-      daysData.textContent = '0';
-      hoursData.textContent = '0';
-      minutesData.textContent = '0';
-      secondsData.textContent = '0';
+      daysData.textContent = '00';
+      hoursData.textContent = '00';
+      minutesData.textContent = '00';
+      secondsData.textContent = '00';
       return;
     }
 
@@ -69,4 +73,4 @@ function timerCounter() {
   }, 1000);
 }
 
-const addLeadingZero = value => (value < 10 ? `0${value}` : `${value}`);
+const addLeadingZero = value => value.toString().padStart(2, '0');
