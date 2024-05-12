@@ -1,14 +1,17 @@
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
+const elForm = document.querySelector('.form');
 
-document.getElementById('promiseForm').addEventListener('submit', function(event) {
+
+elForm.addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const delay = parseInt(this.delay.value);
-    const state = this.state.value;
+    const delay = parseInt(event.target.elements.delay.value);  
+    const stateInputs = event.target.elements.state;  
+    const state = Array.from(stateInputs).find(radio => radio.checked)?.value;  
 
-    new Promise((resolve, reject) => {
+   const promise = new Promise((resolve, reject) => {
         setTimeout(() => {
             if (state === 'fulfilled') {
                 resolve(delay);
@@ -17,7 +20,8 @@ document.getElementById('promiseForm').addEventListener('submit', function(event
             }
         }, delay);
     })
-    .then(delay => {
+
+    promise.then(delay => {
         iziToast.success({
             title: 'Fulfilled',
             message: `Fulfilled promise in ${delay}ms`,
